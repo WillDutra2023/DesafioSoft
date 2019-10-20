@@ -15,14 +15,12 @@ export const Types = {
  */
 
 const INITIAL_STATE = {
-  blogs: [],
-  marcas: [{}],
-  banners: [],
+  tasks: [],
+  users: [],
   loading: false,
   error: false,
   refreshing: false,
   isConnected: true,
-  modalErrorVisible: false,
 };
 
 export default function home(state = INITIAL_STATE, action) {
@@ -36,9 +34,7 @@ export default function home(state = INITIAL_STATE, action) {
     case Types.REQUEST_SUCESS:
       return {
         ...state,
-        banners: action.payload.banners,
-        marcas: action.payload.marcas,
-        blogs: action.payload.blogs,
+        tasks: action.payload.tasks,
         error: false,
         loading: false,
         refreshing: false,
@@ -66,7 +62,6 @@ export default function home(state = INITIAL_STATE, action) {
       return {
         ...state,
         isConnected: action.payload.isConnected,
-        modalErrorVisible: !action.payload.isConnected,
       };
     default:
       return state;
@@ -81,18 +76,18 @@ export const Creators = {
   request: () => ({
     type: Types.REQUEST,
   }),
-  requestSucess: (banners, marcas, blogs) => ({
+  requestSucess: (tasks) => ({
     type: Types.REQUEST_SUCESS,
-    payload: { banners, marcas, blogs },
+    payload: { tasks },
   }),
-  requestError: responseError => ({
+  requestError: (responseError) => ({
     type: Types.FAILURE,
     payload: { responseError },
   }),
   clearProps: () => ({
     type: Types.CLEAR_PROPS,
   }),
-  requestIsConnected: isConnected => ({
+  requestIsConnected: (isConnected) => ({
     type: Types.ISCONNECTED,
     payload: { isConnected },
   }),

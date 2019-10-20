@@ -1,4 +1,3 @@
-import {requestLogin, requestEmail} from './login';
-import {requestBanner, requestBlog, requestMarca} from './home';
+import { requestTasks, requestUsers } from './home';
 
-export {requestLogin, requestEmail, requestBanner, requestBlog, requestMarca};
+export { requestTasks, requestUsers };

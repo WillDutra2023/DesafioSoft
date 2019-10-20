@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
 
-import {Text} from 'react-native';
+//import {Text} from 'react-native';
+
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {Creators as LoginActions} from '~/store/ducks/login';
 
 import {
   Container,
@@ -15,10 +19,37 @@ import {
   TextTouch,
 } from './styles';
 
-// import { Container } from './styles';
+class Login extends Component {
+  state = {
+    disabled: true,
+  };
 
-export default class Login extends Component {
+  getUserText = text => {
+    let isUpperCase = false;
+    [...text].forEach(element => {
+      if (element == element.toUpperCase()) {
+        isUpperCase = true;
+        return;
+      }
+    });
+
+    this.setState({
+      disabled: isUpperCase,
+    });
+  };
+
+  goHome = async () => {
+    const {disabled} = this.state;
+
+    if (!disabled) {
+      this.props.loginRequest(true);
+    }
+  };
+
   render() {
+    const {disabled} = this.state;
+    const {logado} = this.props;
+
     return (
       <Container>
         <HeaderView>
@@ -29,8 +60,13 @@ export default class Login extends Component {
         </ImageView>
         <FormView>
           <TextTitleInput>Nome</TextTitleInput>
-          <TextInput placeholder="Digite seu nome" />
-          <TouchableOpacity>
+          <TextInput
+            placeholder="Digite seu nome"
+            onChangeText={text => {
+              this.getUserText(text);
+            }}
+          />
+          <TouchableOpacity disabled={disabled} onPress={() => this.goHome()}>
             <TextTouch>ENTRAR</TextTouch>
           </TouchableOpacity>
         </FormView>
@@ -38,3 +74,15 @@ export default class Login extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  logado: state.login.logado,
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(LoginActions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Login);

@@ -14,17 +14,13 @@ export default class App extends Component {
 
   async componentDidMount() {
     const isLogado = await getLogado();
-    console.log('componentDidMount isLogado', isLogado);
     this.setState({
-      userChecked: true,
       userLogged: !!isLogado,
     });
   }
 
   render() {
-    const {userChecked, userLogged} = this.state;
-
-    if (!userChecked) return null;
+    const {userLogged} = this.state;
 
     const Routes = createNavigator(userLogged);
 

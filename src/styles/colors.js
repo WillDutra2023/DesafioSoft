@@ -10,6 +10,7 @@ export default {
   gray32: '#504F68',
   grayMain: '#ECECEC',
   blue: '#1281D0',
+  lightGray: '#E8E8E8',
 
   primary: '#1E345e',
   secundary: '#1D2648',

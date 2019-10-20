@@ -1,16 +1,11 @@
 import api from '~/services/api';
 
-export const requestBanner = async () => {
-  const response = await api.get('banners');
+export const requestTasks = async () => {
+  const response = await api.get('todos');
   return response;
 };
 
-export const requestBlog = async () => {
-  const response = await api.get('blogs');
-  return response;
-};
-
-export const requestMarca = async () => {
-  const response = await api.get('marcas');
+export const requestUsers = async () => {
+  const response = await api.get('users');
   return response;
 };

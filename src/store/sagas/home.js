@@ -1,50 +1,32 @@
 /* eslint-disable quote-props */
 import { call, put, all } from 'redux-saga/effects';
 
-import { requestBanner, requestBlog, requestMarca } from '~/webService';
+import { requestTasks, requestUsers } from '~/webService';
 
 import { Creators as HomeActions } from '~/store/ducks/home';
 
+function* getNameUserTask(users, tasks) {
+  const result = []
+  tasks.forEach((task, indexTask) => {
+    users.forEach((user, indexUser)=> {
+      if(task.userId == user.id)
+        result.push({user, task:{title: task.title, completed: task.completed}});
+    });
+  });
+  return result;
+}
+
 export function* request() {
   try {
-    const [banner, marca, blog] = yield all([
-      call(requestBanner),
-      call(requestMarca),
-      call(requestBlog),
+    const [users, tasks] = yield all([
+      call(requestUsers),
+      call(requestTasks),
     ]);
-    yield put(HomeActions.requestSucess(banner.data, marca.data, blog.data));
+    const result = yield getNameUserTask(users.data, tasks.data)
+    console.log(result)
+    yield put(HomeActions.requestSucess(result));
   } catch (error) {
     console.log(error);
     yield put(HomeActions.requestError(error));
   }
 }
-
-// export function* banner() {
-//   try {
-//     const response = yield call(requestBanner);
-//     yield put(HomeActions.bannerSucess(response.data));
-//   } catch (error) {
-//     const msgError = error.response.data.erro;
-//     yield put(HomeActions.requestError(msgError));
-//   }
-// }
-
-// export function* marca() {
-//   try {
-//     const response = yield call(requestMarca);
-//     yield put(HomeActions.marcaSucess(response.data));
-//   } catch (error) {
-//     const msgError = error.response.data.erro;
-//     yield put(HomeActions.requestError(msgError));
-//   }
-// }
-
-// export function* blog() {
-//   try {
-//     const response = yield call(requestBlog);
-//     yield put(HomeActions.blogSucess(response.data));
-//   } catch (error) {
-//     const msgError = error.response.data.erro;
-//     yield put(HomeActions.requestError(msgError));
-//   }
-// }
